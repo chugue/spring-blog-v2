@@ -24,8 +24,8 @@ public class BoardController {
     }
 
     @PostMapping("board/save")
-    public String save (String title, String content, String username){
-        boardNativeRepository.save(title, content, username);
+    public String save (BoardRequest.SaveDTO reqDTO){
+        boardNativeRepository.save(reqDTO.toEntity());
         return "redirect:/";
     }
 
