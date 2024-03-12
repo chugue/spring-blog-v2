@@ -3,6 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
+compileJava {
+	options.compilerArgs << '-parameters'
+}
 
 group = 'shop.mtcoding'
 version = '0.0.1-SNAPSHOT'
@@ -42,6 +45,4 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-compileJava {
-	options.compilerArgs << '-parameters'
-}
+

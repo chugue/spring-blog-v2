@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -15,6 +16,12 @@ import java.util.List;
 @Controller
 public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
+
+    @PostMapping("/board/{id}/update")
+    public String update (@PathVariable(name = "id") Integer id, String title, String content, String username){
+        boardNativeRepository.updateById(id, title, content, username);
+        return "redirect:/board/"+id;
+    }
 
     @PostMapping("board/save")
     public String save (String title, String content, String username){
@@ -37,7 +44,7 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable int id, HttpServletRequest request) {
+    public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
         Board board = boardNativeRepository.findById(id);
         request.setAttribute("board", board);
 
@@ -54,7 +61,8 @@ public class BoardController {
     public String updateForm(@PathVariable(name ="id") Integer id, HttpServletRequest request) {
         Board board = boardNativeRepository.findById(id);
         request.setAttribute("board", board);
-
-        return "board/detail";
+        return "board/update-form";
     }
+
+
 }
