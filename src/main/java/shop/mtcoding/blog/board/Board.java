@@ -2,6 +2,7 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import shop.mtcoding.util.MyDateUtil;
 
 import java.sql.Timestamp;
 

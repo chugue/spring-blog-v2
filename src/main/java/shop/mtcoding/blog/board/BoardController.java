@@ -1,10 +1,14 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -19,9 +23,13 @@ public class BoardController {
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(HttpServletRequest request) {
+
+        List<Board> boardList = boardNativeRepository.findAll();
+        request.setAttribute("boardList",boardList);
         return "index";
     }
+
 
     @GetMapping("/board/save-form")
     public String saveForm() {
@@ -29,7 +37,18 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id) {
+    public String detail(@PathVariable Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+
+        return "board/detail";
+    }
+
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+
         return "board/detail";
     }
 }
