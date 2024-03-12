@@ -15,14 +15,13 @@ public class BoardNativeRepository {
     private final EntityManager em;
 
 
-    public List<Board>  findAll (){
+    public List<Board> findAll (){
         // 쿼리 결과를 정확히 받을 엔티티가 있다면 클래스명.class로 바로 매핑해서 받을 수 있다.
         Query query = em.createNativeQuery("SELECT * FROM board_tb ORDER BY id DESC", Board.class);
         return query.getResultList();
     }
 
-    public Board  findById (int id){
-        // 쿼리 결과를 정확히 받을 엔티티가 있다면 클래스명.class로 바로 매핑해서 받을 수 있다.
+    public Board findById (Integer id){
         Query query = em.createNativeQuery("SELECT * FROM board_tb WHERE id = ?", Board.class);
         query.setParameter(1, id);
         return (Board) query.getSingleResult();
@@ -36,6 +35,14 @@ public class BoardNativeRepository {
         query.setParameter(2, content);
         query.setParameter(3, username);
 
+        query.executeUpdate();
+    }
+
+    @Transactional
+    public void deleteById (int id){
+        Query query =
+                em.createNativeQuery("DELETE FROM board_tb WHERE id = ?");
+        query.setParameter(1, id);
         query.executeUpdate();
     }
 }

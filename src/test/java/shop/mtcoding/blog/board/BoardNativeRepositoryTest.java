@@ -37,8 +37,17 @@ public class BoardNativeRepositoryTest {
         //then
         assertThat(board.getTitle()).isEqualTo("제목1");
         assertThat(board.getContent()).isEqualTo("내용1");
-
     }
 
+    @Test
+    public void deleteById_test () {
+        //given
+        int id = 1;
+        //when
+        boardNativeRepository.deleteById(id);
+        //then
+        List<Board> boardList = boardNativeRepository.findAll();
+        assertThat(boardList.size()).isEqualTo(3);
 
+    }
 }
