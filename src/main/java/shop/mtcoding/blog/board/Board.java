@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,9 +23,16 @@ public class Board {
 
 //    @JoinColumn(name = "user_id") 칼럼이름을 내가 정할 수 있다.
     @ManyToOne
-    private User user; // user_id 변수명
+    private User user; // db -> user_id 변수명
+
     @CreationTimestamp //pc -> db (날짜주입)
     private Timestamp createdAt;
-
-
+    @Builder
+    public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
 }
