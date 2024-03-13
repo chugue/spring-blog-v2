@@ -1,30 +1,30 @@
-package shop.mtcoding.blog.board;
+package shop.mtcoding.blog.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import shop.mtcoding.blog.user.User;
-import shop.mtcoding.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Table(name="board_tb")
+@Table(name = "user_tb")
 @Data
 @Entity
-public class Board {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String title;
-    private String content;
-
-//    @JoinColumn(name = "user_id") 칼럼이름을 내가 정할 수 있다.
-    @ManyToOne
-    private User user; // user_id 변수명
+    @Column(unique = true)
+    private String username;
+    private String password;
+    private String email;
     @CreationTimestamp //pc -> db (날짜주입)
     private Timestamp createdAt;
 
-
+    public User(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 }
