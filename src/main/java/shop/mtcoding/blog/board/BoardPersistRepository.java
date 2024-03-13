@@ -24,8 +24,7 @@ public class BoardPersistRepository {
 
 
     public List<Board> findAll() {
-        // 쿼리 결과를 정확히 받을 엔티티가 있다면 클래스명.class로 바로 매핑해서 받을 수 있다.
-        Query query = em.createNativeQuery("SELECT * FROM board_tb ORDER BY id DESC", Board.class);
+        Query query = em.createQuery("SELECT b FROM Board b ORDER BY b.id desc", Board.class);
         return query.getResultList();
     }
 

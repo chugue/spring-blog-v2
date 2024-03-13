@@ -16,6 +16,7 @@ import java.util.List;
 @Controller
 public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
     @PostMapping("/board/{id}/update")
     public String update (@PathVariable(name = "id") Integer id, String title, String content, String username){
@@ -32,7 +33,7 @@ public class BoardController {
     @GetMapping("/")
     public String index(HttpServletRequest request) {
 
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         request.setAttribute("boardList",boardList);
         return "index";
     }
