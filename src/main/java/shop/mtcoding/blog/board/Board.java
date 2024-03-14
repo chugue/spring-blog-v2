@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import shop.mtcoding.blog.user.User;
-import shop.mtcoding.util.MyDateUtil;
 
 import java.sql.Timestamp;
 
@@ -28,7 +27,7 @@ public class Board {
     @CreationTimestamp //pc -> db (날짜주입)
     private Timestamp createdAt;
     @Builder
-    public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
+    public Board(Integer id, String title, String content, User user) {
         this.id = id;
         this.title = title;
         this.content = content;
