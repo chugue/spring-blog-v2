@@ -18,15 +18,7 @@ public class BoardRepository {
         String q1 = "SELECT b FROM Board b ORDER BY b.id DESC";
         List<Board> boardList = em.createQuery(q1, Board.class).getResultList();
 
-//        String q2 = "SELECT u FROM User u WHERE u.id = (";
-//
-
-//        List<User> userList = em.createQuery(q2, User.class).getResultList();
-
-
-
         return boardList; // user가 채워져 있어야됨
-
     }
 
     public List<Board> findAll () {

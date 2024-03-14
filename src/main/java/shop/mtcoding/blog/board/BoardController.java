@@ -17,6 +17,7 @@ public class BoardController {
 
     @PostMapping("/board/{id}/update")
     public String updateById (@PathVariable(name = "id") Integer id){
+
         return "redirect:/board/"+id;
     }
 

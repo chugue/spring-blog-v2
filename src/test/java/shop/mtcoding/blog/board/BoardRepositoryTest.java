@@ -1,15 +1,12 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import shop.mtcoding.blog.user.User;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Import(BoardRepository.class)
