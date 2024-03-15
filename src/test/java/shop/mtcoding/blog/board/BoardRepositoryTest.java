@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,7 +20,37 @@ public class BoardRepositoryTest {
 
 
     @Test
-    public void stream_test(){
+    public void updateById_test() {
+        // given
+        int id = 1;
+        BoardRequest.UpdateDTO reqDTO = new BoardRequest.UpdateDTO("테스트1","테스트2");
+        // when
+        Board board = boardRepository.findById(id);
+        board.builder()
+            .title(reqDTO.getTitle())
+            .content(reqDTO.getContent())
+            .build();
+        // then
+
+    }
+
+    @Test
+    public void deleteById_test() {
+        // given
+        int id = 1;
+        // when
+        Query query = em.createQuery("DELETE FROM Board b WHERE id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        // then
+        List<Board> boardList = boardRepository.findAll();
+        System.out.println(boardList.size());
+
+    }
+
+
+    @Test
+    public void stream_test() {
         // given
         String q = "SELECT b FROM Board b ORDER BY b.id DESC";
         List<Board> boardList = em.createQuery(q, Board.class).getResultList();

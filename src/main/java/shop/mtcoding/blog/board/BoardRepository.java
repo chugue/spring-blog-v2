@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import shop.mtcoding.blog.user.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +13,19 @@ import java.util.List;
 @Repository
 public class BoardRepository {
     private final EntityManager em;
+
+    @Transactional
+    public void save(Board board){
+        em.persist(board);
+    }
+
+    @Transactional
+    public void updateById(int id, BoardRequest.UpdateDTO reqDTO){
+        Board board = findById(id);
+        board.setTitle(reqDTO.getTitle());
+        board.setContent(reqDTO.getContent());
+    }
+
 
     public List<Board> findAllV2 () {
         String q1 = "SELECT b FROM Board b ORDER BY b.id DESC";
@@ -36,5 +49,12 @@ public class BoardRepository {
         // id, title, user_id (이질감), created_at
         Board board = em.find(Board.class, id);
         return board;
+    }
+
+    @Transactional
+    public void deleteById (int id){
+        Query query = em.createQuery("DELETE FROM Board b WHERE id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }
