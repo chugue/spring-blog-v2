@@ -1,4 +1,4 @@
-package shop.mtcoding.util;
+package shop.mtcoding._core.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import java.sql.Date;

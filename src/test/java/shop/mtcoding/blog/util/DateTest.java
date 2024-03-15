@@ -2,7 +2,7 @@ package shop.mtcoding.blog.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.junit.jupiter.api.Test;
-import shop.mtcoding.util.MyDateUtil;
+import shop.mtcoding._core.util.MyDateUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;

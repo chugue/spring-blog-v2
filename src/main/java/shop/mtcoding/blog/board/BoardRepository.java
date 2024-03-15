@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -13,6 +14,29 @@ import java.util.List;
 @Repository
 public class BoardRepository {
     private final EntityManager em;
+
+
+
+    @Transactional // 더티체킹이 일어나기 때문에 여기서 코드 완료
+    public void updateById (int id, String title, String content){
+        Board board = findById(id);
+        board.setTitle(title);
+        board.setContent(content);
+    }
+
+    @Transactional
+    public void deleteById(int id){
+        Query query = em.createQuery("DELETE FROM Board b WHERE b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+
+    @Transactional
+    public Board save (Board board){
+        em.persist(board); //DB에 담긴 board
+        return board;
+    }
 
     public List<Board> findAllV2 () {
         String q1 = "SELECT b FROM Board b ORDER BY b.id DESC";

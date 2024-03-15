@@ -2,6 +2,7 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -18,13 +19,31 @@ public class BoardRepositoryTest {
     private EntityManager em;
 
 
-    @Test
-    public void stream_test(){
-        // given
-        String q = "SELECT b FROM Board b ORDER BY b.id DESC";
-        List<Board> boardList = em.createQuery(q, Board.class).getResultList();
-        // when
 
+
+    @Test
+    public void updateById_test(){
+        // given
+        int id = 1;
+        String title = "테스트1";
+        String content = "테스트2";
+
+        // when
+        boardRepository.updateById(id, title, content);
+        // then - 쿼리를 확인해 보고 싶다면은 flush를 해봐야된다.
+        em.flush();
+
+    }
+
+
+    @Test
+    public void deleteById_test(){
+        // given
+        int id = 4;
+        // when
+        boardRepository.deleteById(id);
+        List<Board> boardList = boardRepository.findAll();
+        System.out.println(boardList.size());
         // then
 
     }
