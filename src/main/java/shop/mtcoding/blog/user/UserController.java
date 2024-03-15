@@ -1,13 +1,14 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import shop.mtcoding._core.errors.Exception400;
+import shop.mtcoding._core.errors.Exception401;
 
 
 @RequiredArgsConstructor
@@ -33,17 +34,23 @@ public class UserController {
 
     @PostMapping("/join")
     public String join (UserRequest.JoinDTO reqDTO){
-        User user = userRepository.save(reqDTO.toEntity());
-        session.setAttribute("sessionUser", user);
+        try {
+            userRepository.save(reqDTO.toEntity());
+        } catch (NoResultException e) {
+            throw new Exception400("동일한 유저네임이 존재합니다");
+        }
         return "redirect:/";
     }
 
     @PostMapping("/login")
     public String login (UserRequest.LoginDTO reqDTO) {
-        User sesssionUser = userRepository.findByUsernameAndPassword(reqDTO);
-
-        session.setAttribute("sessionUser", sesssionUser);
-        return "redirect:/";
+        try {
+            User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
+            session.setAttribute("sessionUser", sessionUser);
+            return "redirect:/";
+        }catch (NoResultException e){
+            throw new Exception401("유저네임 혹은 비밀번호가 틀렸어요");
+        }
     }
 
 
