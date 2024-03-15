@@ -24,13 +24,17 @@ public class UserRepository {
         em.persist(user); //DB에 담긴 user
         return user;
     }
-//
-//    @Transactional
-//    public User updateById (int id, String password, String email){
-//        User user = findById(id);
-//    }
-//
-//    private User findById(int id) {
-//
-//    }
+
+    @Transactional
+    public User updateById (int id, UserRequest.UpdateDTO reqDTO){
+        User user = findById(id);
+        user.setPassword(reqDTO.getPassword());
+        user.setEmail(reqDTO.getEmail());
+        return user;
+    }
+
+    public User findById(int id) {
+        User user = em.find(User.class, id);
+        return user;
+    }
 }
