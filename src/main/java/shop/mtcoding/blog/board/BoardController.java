@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import shop.mtcoding._core.errors.Exception403;
-import shop.mtcoding._core.errors.Exception404;
+import shop.mtcoding._core.errors.exception.Exception403;
+import shop.mtcoding._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class BoardController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findById(id);
 
-        if(sessionUser.getId() != board.getUser().getId()){
+        if (sessionUser.getId() != board.getUser().getId()) {
             throw new Exception403("게시글을 삭제할 권한이 없습니다");
         }
 
@@ -34,7 +34,7 @@ public class BoardController {
     }
 
 
-    @PostMapping("board/save")
+    @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardRepository.save(reqDTO.toEntity(sessionUser));
@@ -46,7 +46,7 @@ public class BoardController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findById(id);
 
-        if(sessionUser.getId() != board.getUser().getId()){
+        if (sessionUser.getId() != board.getUser().getId()) {
             throw new Exception403("게시글을 수정할 권한이 없습니다");
         }
 
@@ -76,23 +76,28 @@ public class BoardController {
     public String detail(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findByIdJoinUser(id);
-        boolean isOnwer = false;
+        // 기본 false 유지
+        // 로그인 자체를 안했음 false
+        // 로그인 햇는데 게시글 주인이 아니면 false
+        // 로그인 했는데 게시글 주인이라면 true
+        boolean isOwner = false;
         if (sessionUser != null) {
             if (sessionUser.getId() == board.getUser().getId()) {
-                isOnwer = true;
+                isOwner = true;
             }
         }
         request.setAttribute("board", board);
+        request.setAttribute("isOwner", isOwner);
         return "board/detail";
     }
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable(name = "id") Integer id, HttpServletRequest request) {
         Board board = boardRepository.findById(id);
-
-        if(board == null){
+        if (board == null) {
             throw new Exception404("해당 게시글을 찾을 수 없습니다");
         }
+
 
         request.setAttribute("board", board);
         return "board/update-form";

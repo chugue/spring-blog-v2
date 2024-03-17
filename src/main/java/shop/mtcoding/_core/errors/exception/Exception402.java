@@ -1,4 +1,4 @@
-package shop.mtcoding._core.errors;
+package shop.mtcoding._core.errors.exception;
 
 public class Exception402 extends RuntimeException{
 

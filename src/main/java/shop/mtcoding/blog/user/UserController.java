@@ -1,14 +1,15 @@
 package shop.mtcoding.blog.user;
 
-import jakarta.persistence.NoResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import shop.mtcoding._core.errors.Exception400;
-import shop.mtcoding._core.errors.Exception401;
+import shop.mtcoding._core.errors.exception.Exception400;
+import shop.mtcoding._core.errors.exception.Exception401;
 
 
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class UserController {
     public String join (UserRequest.JoinDTO reqDTO){
         try {
             userRepository.save(reqDTO.toEntity());
-        } catch (NoResultException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new Exception400("동일한 유저네임이 존재합니다");
         }
         return "redirect:/";
@@ -48,7 +49,7 @@ public class UserController {
             User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
             session.setAttribute("sessionUser", sessionUser);
             return "redirect:/";
-        }catch (NoResultException e){
+        }catch (EmptyResultDataAccessException e){
             throw new Exception401("유저네임 혹은 비밀번호가 틀렸어요");
         }
     }
@@ -70,6 +71,7 @@ public class UserController {
     @GetMapping("/user/update-form") //id로 pathvariable를 하지 않은 까닭은 세션값을 불러오면 되기 때문이다.
     public String updateForm(HttpServletRequest request) {
         User sessionUser = (User)session.getAttribute("sessionUser");
+
         User user = userRepository.findById(sessionUser.getId());
         request.setAttribute("user", user);
         return "user/update-form";
