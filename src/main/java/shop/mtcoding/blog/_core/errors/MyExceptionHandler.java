@@ -1,14 +1,16 @@
-package shop.mtcoding._core.errors;
+package shop.mtcoding.blog._core.errors;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import shop.mtcoding._core.errors.exception.*;
+import shop.mtcoding.blog._core.errors.exception.*;
 
 @ControllerAdvice
 public class MyExceptionHandler {
+
     @ExceptionHandler(Exception400.class)
     public String ex400(Exception400 e, HttpServletRequest request) {
+        System.out.println("MyExceptionHandler : 실행됨 : "+e.getMessage());
         request.setAttribute("msg", e.getMessage());
         return "err/400";
     }

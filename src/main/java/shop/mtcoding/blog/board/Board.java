@@ -10,8 +10,8 @@ import shop.mtcoding.blog.user.User;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Table(name="board_tb")
 @Data
+@Table(name = "board_tb")
 @Entity
 public class Board {
     @Id
@@ -19,11 +19,17 @@ public class Board {
     private Integer id;
     private String title;
     private String content;
-//    @JoinColumn(name = "user_id") 칼럼이름을 내가 정할 수 있다.
-    @ManyToOne (fetch = FetchType.LAZY)
-    private User user; // db -> user_id 변수명
-    @CreationTimestamp //pc -> db (날짜주입)
+
+    //@JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user; // db -> user_id
+
+    @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
+
+    @Transient // 테이블 생성이 안됨
+    private boolean isOwner;
+
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {

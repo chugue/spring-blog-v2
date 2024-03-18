@@ -1,6 +1,7 @@
-package shop.mtcoding._core.util;
+package shop.mtcoding.blog._core.util;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 

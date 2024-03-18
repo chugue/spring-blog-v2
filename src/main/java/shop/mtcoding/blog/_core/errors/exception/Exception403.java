@@ -1,4 +1,4 @@
-package shop.mtcoding._core.errors.exception;
+package shop.mtcoding.blog._core.errors.exception;
 
 public class Exception403 extends RuntimeException{
 
