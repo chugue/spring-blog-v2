@@ -12,4 +12,7 @@ public interface BoardJPARepository extends JpaRepository<Board, Integer> {
     // 이렇게라도 해야지 같은 의존 일관성이 유지가 된다.
     @Query("select b from Board b join fetch b.user u where b.id = :id")
     Optional<Board> findByIdJoinUser(@Param("id") int id);
+
+    @Query("select b from Board b join fetch b.user u left join fetch b.replies r where b.id = :id")
+    Optional<Board> findByIdJoinUserAndReplies(@Param("id") int id);
 }

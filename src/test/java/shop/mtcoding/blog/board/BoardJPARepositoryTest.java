@@ -16,6 +16,18 @@ public class BoardJPARepositoryTest {
     @Autowired
     private EntityManager em;
 
+
+    @Test
+    public void findByIdJoinUserAndReplies_test(){
+        // given
+        int id = 4;
+        // when
+        Board board = boardJPARepository.findByIdJoinUserAndReplies(id).get();
+
+        // then
+
+    }
+
     @Test
     public void findById_test(){
         // given

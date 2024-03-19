@@ -65,6 +65,7 @@ public class BoardController {
         Board board = boardService.글상세보기(id, sessionUser);
 
         request.setAttribute("board", board);
+        System.out.println("");
         return "board/detail";
     }
 
