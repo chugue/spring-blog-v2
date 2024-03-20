@@ -15,6 +15,8 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
+    // TODO : 회원정보 조회 API 필요
+
     @GetMapping("/user/update-form")
     public String updateForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -23,7 +25,7 @@ public class UserController {
         return "user/update-form";
     }
 
-    @PostMapping("/user/update")
+    @PostMapping("/user/update") // 액션은 필요함
     public String update(UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
