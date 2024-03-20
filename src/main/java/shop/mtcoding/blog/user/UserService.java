@@ -12,8 +12,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service // IoC 등록
 public class UserService {
-
     private final UserJPARepository userJPARepository;
+
+    public UserResponse.DTO 회원조회(int id){
+        User user = userJPARepository.findById(id)
+                .orElseThrow(() -> new Exception404("회원정보를 찾을 수 없습니다"));
+        return new UserResponse.DTO(user); // 엔티티 생명 종료, DTO로 옮기고 엔티티 생명종료 (객체 복사)
+    }
 
     @Transactional
     public User 회원수정(int id, UserRequest.UpdateDTO reqDTO){
@@ -25,12 +30,6 @@ public class UserService {
         return user;
     } // 더티체킹
 
-    public User 회원조회(int id){
-        User user = userJPARepository.findById(id)
-                .orElseThrow(() -> new Exception404("회원정보를 찾을 수 없습니다"));
-        return user;
-    }
-
     public User 로그인(UserRequest.LoginDTO reqDTO){
         User sessionUser = userJPARepository.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
                 .orElseThrow(() -> new Exception401("인증되지 않았습니다"));
@@ -38,7 +37,7 @@ public class UserService {
     }
 
     @Transactional
-    public void 회원가입(UserRequest.JoinDTO reqDTO){ // ssar
+    public User 회원가입(UserRequest.JoinDTO reqDTO){ // ssar
         // 1. 유저네임 중복검사 (서비스 체크) - DB연결이 필요한 것은 Controller에서 작성할 수 없다.
         Optional<User> userOP = userJPARepository.findByUsername(reqDTO.getUsername());
 
@@ -47,6 +46,6 @@ public class UserService {
         }
 
         // 2. 회원가입
-        userJPARepository.save(reqDTO.toEntity());
+        return userJPARepository.save(reqDTO.toEntity());
     }
 }
